@@ -1,0 +1,4 @@
+*.pcap
+*.pcapng
+*_bg_coloring_rule
+!pcaps/win_sample.pcap
