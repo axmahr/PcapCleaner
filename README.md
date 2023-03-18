@@ -1,16 +1,16 @@
 # PcapCleaner
 [pcapcleaner.py](pcapcleaner.py) filters background traffic from of a given pcap/pcapng file and returns a filtered pcap file. Background traffic includes especially communication with certain domains (e.g. Windows update server), traffic relating to connections with these domains like OCSP and ICMP packets, TLS connections with matching JA3/JA3S fingerprints, periodic TCP connections, traffic of certain protocols and more. For a detailed list of what is getting filtered, take a look at the [corresponding section](#what-is-getting-filtered-in-detail) below .
 
-You have to pass a file of domains (like [domains.txt](domains.txt)) and/or a file with JA3 and JA3S fingerprints (like [ja3_ja3s_hashes](ja3_ja3s_hashes.txt)) to `pcapcleaner.py` via the option `-t/--targets` and/or `-j/--ja3`.
-The given files [domains.txt](domains.txt) and [ja3_ja3s_hashes.txt](ja3_ja3s_hashes.txt) include domains and fingerprints of an extensive amount of background traffic that was recorded in advance on Windows 10 (version 20H2/21H1/21H2) and Ubuntu (version 21.04/21.10) machines.
+You have to pass a file of domains (like [domains.txt](domains.txt)) and/or a file with JA3 and JA3S fingerprints (like [ja3_ja3s_hashes.txt](ja3_ja3s_hashes.txt)) to PcapCleaner via the option `-t/--targets` and/or `-j/--ja3`.
+The given files [domains.txt](domains.txt) and [ja3_ja3s_hashes.txt](ja3_ja3s_hashes.txt) include domains and fingerprints of an extensive amount of background traffic that was captured in advance on Windows 10 (version 20H2/21H1/21H2) and Ubuntu (version 21.04/21.10) machines.
 
-To create your own file with domains and fingerprints or complement the given files you can run [extract_features.py](feature_extraction/extract_features.py) in the folder [feature_extraction](feature_extraction). This script will output all domains and JA3/JA3S fingerprints in the format needed for `pcapcleaner.py`.
+To create your own file with domains and fingerprints or complement the given files you can run [extract_features.py](feature_extraction/extract_features.py) in the folder [feature_extraction](feature_extraction). This script will output all domains and JA3/JA3S fingerprints in the format needed for PcapCleaner.
 
 Since the tool needs to iterate over the whole capture file multiple times (and it's written in Python) it might take 1 or 2 minutes to run for big files.
 
 To test whether PcapCleaner works for you, run:
 ```
-python3 pcapcleaner.py -f pcaps/win_sample.pcap -t domains.txt -j ja3_and_ja3s_hashes.txt --filter-periodicity
+python3 pcapcleaner.py -f pcaps/win_sample.pcap -t domains.txt -j ja3_ja3s_hashes.txt --filter-periodicity
 ```
 
 # Requirements
@@ -24,10 +24,10 @@ pip install scapy
 python3 pcapcleaner.py -f <input-pcap> [options]
 ```
 possible options:
- - `-t/--targets` file containing the domain names to be filtered
- - `-j/--ja3`: file containing JA3 and JA3S fingerprints of the TLS connections to be filtered
+ - `-t/--targets <domains-file>` file containing the domain names to be filtered
+ - `-j/--ja3 <fingerprints-file>`: file containing JA3 and JA3S fingerprints of the TLS connections to be filtered
  - `--filter-periodicity`: additionally filter periodic TCP connections (this includes periodicity whithin a TCP connection and between TCP connections with the same domain) and filter incomplete TCP connections
- - `--export-rule`: return a file containing a wireshark display filter for coloring the filtered packets in the original capture file via `View->Coloring Rules...->Import`. The file might not be created when the given capture file is too large.
+ - `--export-rule`: return a file containing a Wireshark display filter for coloring the filtered packets in the original capture file via `View->Coloring Rules...->Import`. The file might not be created when the given capture file is too large.
 
  `-t/--targets` and/or `-j/--ja3` must be set.
 
@@ -49,4 +49,4 @@ When the option `--filter-periodicity` is selected, PcapCleaner also filters
 
 
 ## Why JA3?
-There are domains that communicate both through foreground and background traffic. `bing.com`, e.g., can be requested actively by users but is also used to call up the latest news for the Windows Live Tiles in the background. In order to be able to distinguish wether a given connection to such a domain is background traffic or not, JA3 and JA3S fingerprints can be used because different clients and servers are used. You can find out more about JA3 in the corresponding (Github repository)[https://github.com/salesforce/ja3]
+There are domains that communicate both through foreground and background traffic. `bing.com`, e.g., can be requested actively by users but is also used to call up the latest news for the Windows Live Tiles in the background. In order to be able to distinguish whether a given connection to such a domain is background traffic or not, JA3 and JA3S fingerprints can be used because different clients and servers are used. You can find out more about JA3 in the corresponding [Github repository](https://github.com/salesforce/ja3).
