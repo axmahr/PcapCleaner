@@ -1,5 +1,5 @@
 # PcapCleaner
-[pcapcleaner.py](pcapcleaner.py) filters background traffic from of a given pcap/pcapng file and returns a filtered pcap file. Background traffic includes especially communication with certain domains (e.g. Windows update server), traffic relating to connections with these domains like OCSP and ICMP packets, TLS connections with matching JA3/JA3S fingerprints, periodic TCP connections, traffic of certain protocols and more. For a detailed list of what is getting filtered, take a look at the [corresponding section](#what-is-getting-filtered-in-detail) below .
+[pcapcleaner.py](pcapcleaner.py) filters background traffic from a given pcap/pcapng file and returns a filtered pcap file. Background traffic includes especially communication with certain domains (e.g. Windows update server), traffic relating to connections with these domains like OCSP and ICMP packets, TLS connections with matching JA3/JA3S fingerprints, periodic TCP connections, traffic of certain protocols and more. For a detailed list of what is getting filtered, take a look at the [corresponding section](#what-is-getting-filtered-in-detail) below .
 
 You have to pass a file of domains (like [domains.txt](domains.txt)) and/or a file with JA3 and JA3S fingerprints (like [ja3_ja3s_hashes.txt](ja3_ja3s_hashes.txt)) to PcapCleaner via the option `-t/--targets` and/or `-j/--ja3`.
 The given files [domains.txt](domains.txt) and [ja3_ja3s_hashes.txt](ja3_ja3s_hashes.txt) include domains and fingerprints of an extensive amount of background traffic that was captured in advance on Windows 10 (version 20H2/21H1/21H2) and Ubuntu (version 21.04/21.10) machines.
@@ -14,7 +14,7 @@ python3 pcapcleaner.py -f pcaps/win_sample.pcap -t domains.txt -j ja3_ja3s_hashe
 ```
 
 # Requirements
-PcapCleaner needs to run on Linux. Python 3.7+ and Scapy is required. 
+PcapCleaner needs to run on Linux. Python 3.10+ and Scapy is required. 
 ```
 pip install scapy
 ```
